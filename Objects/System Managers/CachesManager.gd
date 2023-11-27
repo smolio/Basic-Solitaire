@@ -1,8 +1,6 @@
 class_name CachesManager
 extends Node
 
-signal played_card_into_tableau
-signal played_card_into_foundation
 
 @export var stockpile: Node
 @export var wastepile: Node

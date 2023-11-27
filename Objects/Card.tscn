@@ -23,6 +23,7 @@ offset_right = 57.0
 offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 script = ExtResource("1_3p3j4")
 metadata/_edit_use_anchors_ = true

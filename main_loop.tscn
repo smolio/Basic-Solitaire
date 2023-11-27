@@ -1,10 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://dpcelkwav7dc"]
+[gd_scene load_steps=11 format=3 uid="uid://dpcelkwav7dc"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_h2u22"]
 [ext_resource type="Resource" uid="uid://qutdo4amnvqa" path="res://Objects/Resources/DefaultMargins.tres" id="2_csw5x"]
-[ext_resource type="Texture2D" uid="uid://bygru7ga2xyja" path="res://Assets/board_final_classicsolitaire.png" id="2_fbu2l"]
 [ext_resource type="PackedScene" uid="uid://drom4gytp3aq4" path="res://Objects/StockPileDeck.tscn" id="3_1w1nt"]
-[ext_resource type="Texture2D" uid="uid://b5cf3sxe1q5mn" path="res://Assets/blank-board-560-by-600.png" id="4_51bac"]
 [ext_resource type="Script" path="res://Objects/System Managers/CachesManager.gd" id="4_d1ice"]
 [ext_resource type="PackedScene" uid="uid://gal5u7pannpg" path="res://Objects/WastePileDeck.tscn" id="4_f4tui"]
 [ext_resource type="Script" path="res://Objects/System Managers/EmptyCellManager.gd" id="5_5t5j8"]
@@ -20,26 +18,14 @@ CM = NodePath("CachesManager")
 SM = NodePath("StacksManager")
 TM = NodePath("TableauManager")
 
-[node name="Board" type="TextureRect" parent="."]
-visible = false
+[node name="Board" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("2_fbu2l")
-stretch_mode = 2
-
-[node name="Board-Blank" type="TextureRect" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("4_51bac")
-stretch_mode = 2
+color = Color(0.105469, 0.453125, 0.289063, 1)
 
 [node name="EmptyCellManager" type="Node" parent="."]
 script = ExtResource("5_5t5j8")

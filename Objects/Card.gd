@@ -26,7 +26,7 @@ var condition: Dictionary = {
 #var card_attr = ["spade", "K", FACEUP]
 
 #Card should be initialized with a suit, value, and face position
-func setup(card_attr: Array):
+func setup(card_attr: Array) -> void:
 	
 	#Set the suit
 	self.suit = card_attr[0]
@@ -38,18 +38,20 @@ func setup(card_attr: Array):
 		"diamond","heart":
 			self.color = suit_color.RED
 	
-	#Set integer value
-	match card_attr[1]:
-		"A":
-			self.value = 1
-		"J":
-			self.value = 11
-		"Q":
-			self.value = 12
-		"K":
-			self.value = 13
-		_:
-			self.value = int(card_attr[1])
+	#Set the card value (#1 - #13)
+	self.value = card_attr[1] + 1
+#	#Set integer value
+#	match card_attr[1]:
+#		"A":
+#			self.value = 1
+#		"J":
+#			self.value = 11
+#		"Q":
+#			self.value = 12
+#		"K":
+#			self.value = 13
+#		_:
+#			self.value = int(card_attr[1])
 	
 	#Set the face position
 	self.face = card_attr[2]
@@ -80,12 +82,12 @@ func _gui_input(event: InputEvent) -> void:
 			log_move_command(self)
 
 
-func _on_focus_entered():
+func _on_focus_entered() -> void:
 	selected = true
 	$Outline.show()
 
 
-func _on_focus_exited():
+func _on_focus_exited() -> void:
 	selected = false
 	$Outline.hide()
 
@@ -119,24 +121,24 @@ func _drop_data(position, data):
 
 
 
-func log_select_command(target):
+func log_select_command(target: Card) -> void:
 	var new_select_command = select_scn.instantiate()
 	self.add_child(new_select_command)
 	print_debug(target)
 
 
-func log_move_command(target):
+func log_move_command(target: Card) -> void:
 	var new_move_command = move_scn.instantiate()
 	self.add_child(new_move_command)
 	print_debug(target)
 
 
-func flip():
-	#if self.condition.flippable:
-	self.face = FACEUP
-#	$ImageFrames.frame = FACEUP
-#	condition.flippable = false
-#	condition.draggable = true
+#func flip():
+#	#if self.condition.flippable:
+#	self.face = FACEUP
+##	$ImageFrames.frame = FACEUP
+##	condition.flippable = false
+##	condition.draggable = true
 
 
 func set_face(new_value):
@@ -144,6 +146,7 @@ func set_face(new_value):
 	match face:
 		FACEUP:
 			$ImageFrames.set_frame(FACEUP)
+			self.mouse_filter = Control.MOUSE_FILTER_STOP
 			condition.draggable = true
 			condition.flippable = false
 		FACEDOWN:
