@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://3mly6ft5ug7u"]
+
+[ext_resource type="Script" path="res://Objects/Card.gd" id="1_3p3j4"]
+[ext_resource type="Texture2D" uid="uid://fjmn4ngcx47g" path="res://Assets/Cards/facedown.png" id="2_arxk8"]
+[ext_resource type="Texture2D" uid="uid://dootdgf48h4be" path="res://Assets/Cards/selected-outline.png" id="2_lpsid"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wiq4g"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_arxk8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Card" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 57.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("1_3p3j4")
+metadata/_edit_use_anchors_ = true
+
+[node name="ImageFrames" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_wiq4g")
+centered = false
+
+[node name="SelectedOutline" type="TextureButton" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+texture_focused = ExtResource("2_lpsid")
+
+[node name="Outline" type="ReferenceRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 57.0
+offset_bottom = 75.0
+mouse_filter = 1
+border_color = Color(0.2, 0.964706, 0.980392, 1)
+border_width = 4.0
+editor_only = false
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

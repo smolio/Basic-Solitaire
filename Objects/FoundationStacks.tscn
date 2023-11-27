@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bk8e2xf0bjsiu"]
+
+[ext_resource type="Script" path="res://Objects/FoundationStacks.gd" id="1_yyv64"]
+[ext_resource type="Resource" uid="uid://qutdo4amnvqa" path="res://Objects/Resources/DefaultMargins.tres" id="2_i4rdy"]
+
+[node name="FoundationStacks" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_yyv64")
+margins = ExtResource("2_i4rdy")

@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://drom4gytp3aq4"]
+
+[ext_resource type="Script" path="res://Objects/StockPileDeck.gd" id="1_ulotc"]
+[ext_resource type="Resource" uid="uid://qutdo4amnvqa" path="res://Objects/Resources/DefaultMargins.tres" id="2_ixupy"]
+[ext_resource type="Texture2D" uid="uid://fjmn4ngcx47g" path="res://Assets/Cards/facedown.png" id="2_q1qyi"]
+[ext_resource type="Texture2D" uid="uid://c2yvkfbbn1wwp" path="res://Assets/Cards/reset-stockpile.png" id="3_x4ks4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1ilrj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_q1qyi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_x4ks4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="StockPileDeck" type="Control"]
+layout_mode = 3
+anchor_right = 0.101786
+anchor_bottom = 0.125
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("1_ulotc")
+margins = ExtResource("2_ixupy")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_q1qyi")
+
+[node name="ImageFrames" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_1ilrj")
+centered = false

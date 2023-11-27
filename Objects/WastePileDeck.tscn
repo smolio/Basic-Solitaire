@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://gal5u7pannpg"]
+
+[ext_resource type="Script" path="res://Objects/WastePileDeck.gd" id="1_n0gfx"]
+[ext_resource type="Resource" uid="uid://qutdo4amnvqa" path="res://Objects/Resources/DefaultMargins.tres" id="2_6jq7n"]
+
+[node name="WastePileDeck" type="Control"]
+layout_mode = 3
+anchor_right = 0.101786
+anchor_bottom = 0.125
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_n0gfx")
+margins = ExtResource("2_6jq7n")
+metadata/_edit_use_anchors_ = true

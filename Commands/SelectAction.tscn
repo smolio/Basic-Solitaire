@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c60wq0rmxryq8"]
+
+[ext_resource type="Script" path="res://Commands/SelectAction.gd" id="1_d60ca"]
+
+[node name="SelectAction" type="Node"]
+script = ExtResource("1_d60ca")
