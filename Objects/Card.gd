@@ -8,7 +8,7 @@ const move_scn = preload("res://Commands/MoveAction.tscn")
 enum {FACEDOWN, FACEUP}
 enum suit_color {RED, BLACK}
 
-#Properties
+#Attributes
 var suit: String
 var color: int
 var value: int
@@ -57,7 +57,6 @@ func setup(card_attr: Array):
 
 func _ready():
 	#Initialize the images and set the initial face position
-	#$ImageFrames.sprite_frames.add_frame("default", load("res://Assets/Cards/facedown.png"))
 	$ImageFrames.sprite_frames.add_frame("default", load("res://Assets/Cards/%s/%s_%d.png" % [suit, suit, value]))
 	$ImageFrames.set_frame(face)
 
@@ -73,7 +72,7 @@ func _gui_input(event: InputEvent) -> void:
 			if (get_global_rect().has_point(event.global_position)):
 				self.grab_focus()
 		elif condition.flippable:
-			self.flip()
+			self.set_face(FACEUP)
 #		elif !(get_global_rect().has_point(event.global_position)):
 #			self.release_focus()
 		elif self.has_focus():

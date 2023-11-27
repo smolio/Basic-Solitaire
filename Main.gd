@@ -1,10 +1,11 @@
 extends Node
 
-signal initialized_collections
+#signal initialized_collections
 
 @export var margins: CardLayoutMargins
 @export var CM: Node
 @export var SM: Node
+@export var TM: Node
 
 var suits: Array = ["spade", "diamond", "club", "heart"]
 var values: Array = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
@@ -18,8 +19,9 @@ func _ready():
 	initialize_deck()
 	initialize_caches()
 
-	#Add Cards to Scene - Call setup_table() for Tableau
-	$StacksManager/TableauStacks.call("setup_table")
+	#Add Tableau Cards to Scene
+	$TableauManager/TableauStacks.call("setup_table")
+
 
 func initialize_deck():
 	full_deck.clear()
@@ -36,10 +38,10 @@ func initialize_deck():
 
 func initialize_caches():
 	CM.stockpile.deck = initialize_collection(StockDataStruct, 24)
-	SM.tableau.tabl = initialize_collection(TableauDataStruct, 28)
+	TM.tableau.tabl = initialize_collection(TableauDataStruct, 28)
 	SM.foundations.foundation = initialize_collection(FoundationDataStruct, 0)
 	CM.wastepile.pile = initialize_collection(WasteDataStruct, 0)
-	initialized_collections.emit()
+	#initialized_collections.emit()
 
 
 func initialize_collection(collection_type: Object, number: int):
@@ -53,3 +55,7 @@ func initialize_collection(collection_type: Object, number: int):
 	else:
 		return collection_type.new()
 
+
+func reset_game():
+	#free children and re-initialize deck and caches
+	pass

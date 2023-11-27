@@ -9,9 +9,12 @@ extends Resource
 @export var card_width: int 
 @export var card_length: int 
 
-@export var card_stack_margin: int
-
 @export var play_area_left_margin: int
 @export var play_area_top_margin: int 
+
+@export var row_distance: int
+@export var column_distance: int
+
+@export var card_stack_margin: int
 
 @export var tableau_top_margin: int

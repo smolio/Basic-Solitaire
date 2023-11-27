@@ -6,7 +6,9 @@
 script = ExtResource("1_nffnm")
 card_width = 57
 card_length = 75
-card_stack_margin = 15
 play_area_left_margin = 20
 play_area_top_margin = 39
+row_distance = 16
+column_distance = 20
+card_stack_margin = 15
 tableau_top_margin = 130

@@ -5,7 +5,7 @@ extends Control
 @export var pile: WasteDataStruct
 
 func _ready():
-	set_position(Vector2(margins.play_area_left_margin, margins.play_area_top_margin) + Vector2(77, 0))
+	set_position(Vector2(margins.play_area_left_margin, margins.play_area_top_margin) + Vector2(margins.card_width + margins.column_distance, 0))
 
 
 func reveal_draw():
