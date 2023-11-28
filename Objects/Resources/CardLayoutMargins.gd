@@ -42,7 +42,7 @@ var _card_stack_margin: int
 	get: return _card_stack_margin
 	set(value): _card_stack_margin = value; calculate_screen_size()
 
-#Screen Size
+#Minimum Screen Size to prevent object cutoffs
 @export var min_screen_width: int 
 @export var min_screen_length: int
 

@@ -22,6 +22,8 @@ var pckd_card = preload("res://Objects/Card.tscn")
 #var project_aspect_ratio =  Vector2i(viewport_width, viewport_height).aspect()
 #const project_aspect_ratio = 600.0 / 560.0
 
+#NEXT THING TO TACKLE: Move card collection data structures out of resource objects and into base node itself
+
 
 func _ready():
 	print_debug(margins.min_screen_width)

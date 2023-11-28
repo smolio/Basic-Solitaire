@@ -1,8 +1,13 @@
 class_name Card
 extends Control
 
+signal dropped_card
+signal picked_up_card
+
 const select_scn = preload("res://Commands/SelectAction.tscn")
 const move_scn = preload("res://Commands/MoveAction.tscn")
+
+@export var margins: CardLayoutMargins
 
 #Constants
 enum {FACEDOWN, FACEUP}
@@ -17,6 +22,7 @@ var face: int:
 
 #State
 var selected: bool = false
+var current_frame_tex: Texture2D
 var condition: Dictionary = {
 	"flippable": false,
 	"selectable": false,
@@ -61,6 +67,7 @@ func _ready():
 	#Initialize the images and set the initial face position
 	$ImageFrames.sprite_frames.add_frame("default", load("res://Assets/Cards/%s/%s_%d.png" % [suit, suit, value]))
 	$ImageFrames.set_frame(face)
+	current_frame_tex = $ImageFrames.sprite_frames.get_frame_texture("default", face)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -92,6 +99,37 @@ func _on_focus_exited() -> void:
 	$Outline.hide()
 
 
+func _get_drag_data(at_position):
+	var selected_card: Card = self
+	
+	#Dragging Preview
+	var preview: TextureRect = TextureRect.new()
+	preview.texture = selected_card.current_frame_tex
+	set_drag_preview(preview)
+	
+	#Show that the card has started move away from original position
+	self.set_modulate(Color(1,1,1,0.5))
+	picked_up_card.emit(selected_card)
+	return selected_card
+
+
+func _can_drop_data(at_position, data):
+	if data is Card: #Or Array[Card]
+		return true
+
+
+func _drop_data(at_position, picked_up_card):
+	if picked_up_card.value + 1 == self.value && picked_up_card.color != self.color:
+		
+		#Snap card to card
+		picked_up_card.position = global_position + Vector2(0, margins.card_stack_margin)
+	picked_up_card.set_modulate(Color(1,1,1,1))
+	dropped_card.emit(picked_up_card) #Tell TableauManager to move it from stack(n) to stack(n) / also move_child to the "front" of the stack
+	#ISSUE: If mouse click release happens out of bounds of Card it goes into the aether
+	#Cancelled drag needs to "reset" objects back to state before dragging began
+	#Figure out how to create a snap threshold, if two cards overlap, it should snap in place, don't rely on released mouse position
+
+
 #func _get_drag_data(position):
 #	var data = self #How do I incorporate a card stack?
 #   var data = CardStack.new(self)
@@ -107,18 +145,15 @@ func _on_focus_exited() -> void:
 #	return data
 
 
-func _can_drop_data(position, data):
-	if data is Card: #Or Card Stack?
-		return data
 
 
-func _drop_data(position, data):
-	pass
-	#should join stack
-	#emit object that CardStack is dropped onto?
-	#data.set_modulate(Color(1,1,1,1))
-	#data.state.dragging = false
-
+	
+#func _drop_data(position, data):
+#	pass
+#	#should join stack
+#	#emit object that CardStack is dropped onto?
+#	#data.set_modulate(Color(1,1,1,1))
+#	#data.state.dragging = false
 
 
 func log_select_command(target: Card) -> void:
@@ -133,16 +168,9 @@ func log_move_command(target: Card) -> void:
 	print_debug(target)
 
 
-#func flip():
-#	#if self.condition.flippable:
-#	self.face = FACEUP
-##	$ImageFrames.frame = FACEUP
-##	condition.flippable = false
-##	condition.draggable = true
-
-
 func set_face(new_value):
 	face = new_value
+	current_frame_tex = $ImageFrames.sprite_frames.get_frame_texture("default", face)
 	match face:
 		FACEUP:
 			$ImageFrames.set_frame(FACEUP)
@@ -152,6 +180,6 @@ func set_face(new_value):
 		FACEDOWN:
 			condition.draggable = false
 			condition.flippable = true
-#Make a setter for face, so that anytime face is set to FACEUP, the card's flippable and draggable states change along with it, also focus_mode
+			
 
 
