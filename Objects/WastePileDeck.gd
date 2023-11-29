@@ -1,16 +1,18 @@
-#class_name WastePileDeck
+class_name WastePileDeck
 extends Control
 
+@export var cards: Array
+
 @export var margins: CardLayoutMargins
-@export var pile: WasteDataStruct
+#@export var pile: WasteDataStruct
 
 func _ready():
 	set_position(Vector2(margins.play_area_left_margin, margins.play_area_top_margin) + Vector2(margins.card_width + margins.column_distance, 0))
 
 
 func reveal_draw():
-	if pile.cards.size() > 0:
-		var next = pile.cards[-1]
+	if cards.size() > 0:
+		var next = cards[-1]
 		
 		next.face = Card.FACEUP
 		next.focus_mode = Control.FOCUS_CLICK

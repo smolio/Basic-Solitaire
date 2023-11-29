@@ -13,15 +13,15 @@ func _ready():
 
 func draw_from_stockpile(card):
 #	print_debug("StockPile to WastePile Transfer begin")
-#	print_debug(stockpile.deck.cards)
-#	print_debug(wastepile.pile.cards)
+#	print_debug(stockpile.cards)
+#	print_debug(wastepile.cards)
 	
-	wastepile.pile.cards.append(card)
+	wastepile.cards.append(card)
 	wastepile.reveal_draw()
 
 #	print_debug("StockPile card transferred to WastePile Complete")
-#	print_debug(stockpile.deck.cards)
-#	print_debug(wastepile.pile.cards)
+#	print_debug(stockpile.cards)
+#	print_debug(wastepile.cards)
 
 
 func refresh_stockpile_from_waste():
@@ -32,8 +32,8 @@ func refresh_stockpile_from_waste():
 		wastepile.remove_child(card)
 	
 	#Push all remaining cards from wastepile data struct to stockpile data struct
-	for i in wastepile.pile.cards.size():
-		stockpile.deck.cards.push_back(wastepile.pile.cards.pop_back())
+	for i in wastepile.cards.size():
+		stockpile.cards.push_back(wastepile.cards.pop_back())
 
 
 

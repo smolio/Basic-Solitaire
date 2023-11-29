@@ -1,5 +1,6 @@
 extends Node
 
+signal initialized_collections
 
 @export var margins: CardLayoutMargins
 @export var CM: Node
@@ -34,9 +35,11 @@ func _ready():
 	
 	initialize_deck()
 	initialize_caches()
-
+	
+	print_debug(TM.tableau.cards)
+	TM.tableau.call("setup_table")
 	#Add Tableau Cards to Scene
-	$TableauManager/TableauStacks.call("setup_table")
+	#$TableauManager/TableauStacks.call("setup_table")
 
 
 #func set_window_aspect_ratio():
@@ -58,22 +61,23 @@ func initialize_deck():
 
 
 func initialize_caches():
-	CM.stockpile.deck = initialize_collection(StockDataStruct, 24)
-	TM.tableau.tabl = initialize_collection(TableauDataStruct, 28)
-	SM.foundations.foundation = initialize_collection(FoundationDataStruct, 0)
-	CM.wastepile.pile = initialize_collection(WasteDataStruct, 0)
+	initialize_collection(24, CM.stockpile)
+	initialize_collection(28, TM.tableau)
+	initialize_collection(0, SM.foundations)
+	initialize_collection(0, CM.wastepile)
 
-
-func initialize_collection(collection_type: Object, number: int):
-	var cards = []
+func initialize_collection(number: int, child: Node):
+	var _cards: Array[Card] = []
 	
 	for i in range(number):
-		cards.append(full_deck.pop_back())
+		_cards.append(full_deck.pop_back())
 	
-	if cards.size() > 0:
-		return collection_type.new(cards)
-	else:
-		return collection_type.new()
+	child.cards.assign(_cards)
+	if child is TableauStacks:
+		child.arrange_tableau()
+	print_debug(child)
+	print_debug(child.cards)
+	initialized_collections.emit()
 
 
 func save_game():
