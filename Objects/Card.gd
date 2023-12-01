@@ -1,8 +1,8 @@
 class_name Card
 extends Control
 
-signal dropped_card
-signal picked_up_card
+#signal dropped_card
+#signal picked_up_card
 
 const select_scn = preload("res://Commands/SelectAction.tscn")
 const move_scn = preload("res://Commands/MoveAction.tscn")
@@ -23,6 +23,7 @@ var face: int:
 #State
 var selected: bool = false
 var current_frame_tex: Texture2D
+var stack_coords: Vector2i
 var condition: Dictionary = {
 	"flippable": false,
 	"selectable": false,
@@ -105,11 +106,12 @@ func _get_drag_data(at_position):
 	#Dragging Preview
 	var preview: TextureRect = TextureRect.new()
 	preview.texture = selected_card.current_frame_tex
+	preview.z_index = 20
 	set_drag_preview(preview)
 	
 	#Show that the card has started move away from original position
 	self.set_modulate(Color(1,1,1,0.5))
-	picked_up_card.emit(selected_card)
+	CardManager.picked_up_card.emit(selected_card)
 	return selected_card
 
 
@@ -121,10 +123,11 @@ func _can_drop_data(at_position, data):
 func _drop_data(at_position, picked_up_card):
 	if picked_up_card.value + 1 == self.value && picked_up_card.color != self.color:
 		
-		#Snap card to card
+		#Snap to card edges
 		picked_up_card.position = global_position + Vector2(0, margins.card_stack_margin)
+	#picked_up_card.z_index = 20
 	picked_up_card.set_modulate(Color(1,1,1,1))
-	dropped_card.emit(picked_up_card) #Tell TableauManager to move it from stack(n) to stack(n) / also move_child to the "front" of the stack
+	CardManager.dropped_card.emit(picked_up_card, self) #Tell TableauManager to move it from stack(n) to stack(n) / also move_child to the "front" of the stack
 	#ISSUE: If mouse click release happens out of bounds of Card it goes into the aether
 	#Cancelled drag needs to "reset" objects back to state before dragging began
 	#Figure out how to create a snap threshold, if two cards overlap, it should snap in place, don't rely on released mouse position

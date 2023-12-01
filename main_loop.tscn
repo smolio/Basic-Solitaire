@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dpcelkwav7dc"]
+[gd_scene load_steps=10 format=3 uid="uid://dpcelkwav7dc"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_h2u22"]
 [ext_resource type="Resource" uid="uid://qutdo4amnvqa" path="res://Objects/Resources/DefaultMargins.tres" id="2_csw5x"]
@@ -7,16 +7,14 @@
 [ext_resource type="PackedScene" uid="uid://gal5u7pannpg" path="res://Objects/WastePileDeck.tscn" id="4_f4tui"]
 [ext_resource type="Script" path="res://Objects/System Managers/EmptyCellManager.gd" id="5_5t5j8"]
 [ext_resource type="Script" path="res://Objects/System Managers/StacksManager.gd" id="7_1upp5"]
-[ext_resource type="Script" path="res://Objects/System Managers/TableauManager.gd" id="7_espr2"]
 [ext_resource type="PackedScene" uid="uid://bo8fo8ayta2eg" path="res://Objects/TableauStacks.tscn" id="7_ex4ny"]
 [ext_resource type="PackedScene" uid="uid://bk8e2xf0bjsiu" path="res://Objects/FoundationStacks.tscn" id="9_uog6a"]
 
-[node name="Main" type="Node" node_paths=PackedStringArray("CM", "SM", "TM")]
+[node name="Main" type="Node" node_paths=PackedStringArray("CM", "SM")]
 script = ExtResource("1_h2u22")
 margins = ExtResource("2_csw5x")
 CM = NodePath("CachesManager")
 SM = NodePath("StacksManager")
-TM = NodePath("TableauManager")
 
 [node name="Board" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -40,15 +38,6 @@ wastepile = NodePath("WastePileDeck")
 
 [node name="WastePileDeck" parent="CachesManager" instance=ExtResource("4_f4tui")]
 
-[node name="TableauManager" type="Node" parent="." node_paths=PackedStringArray("tableau", "waste")]
-script = ExtResource("7_espr2")
-tableau = NodePath("TableauStacks")
-waste = NodePath("WastePileDeck")
-
-[node name="TableauStacks" parent="TableauManager" instance=ExtResource("7_ex4ny")]
-
-[node name="WastePileDeck" parent="TableauManager" instance=ExtResource("4_f4tui")]
-
 [node name="StacksManager" type="Node" parent="." node_paths=PackedStringArray("foundations", "tableau")]
 script = ExtResource("7_1upp5")
 foundations = NodePath("FoundationStacks")
@@ -57,5 +46,3 @@ tableau = NodePath("TableauStacks")
 [node name="FoundationStacks" parent="StacksManager" instance=ExtResource("9_uog6a")]
 
 [node name="TableauStacks" parent="StacksManager" instance=ExtResource("7_ex4ny")]
-
-[node name="WastePileDeck" parent="StacksManager" instance=ExtResource("4_f4tui")]

@@ -3,19 +3,19 @@ extends Node
 signal initialized_collections
 
 @export var margins: CardLayoutMargins
-@export var CM: Node
-@export var SM: Node
-@export var TM: Node
+@export var CM: CachesManager
+@export var SM: StacksManager
+@export var TM: TableauManager
 
 
 enum gamestate {NEW_GAME, LOAD_GAME}
+enum count {STOCK = 24, TABLEAU = 28}
 
 var suits: Array = ["spade", "diamond", "club", "heart"]
 #var values: Array = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
 
-var full_deck: Array = []
+var pckd_card: PackedScene = preload("res://Objects/Card.tscn")
 
-var pckd_card = preload("res://Objects/Card.tscn")
 
 #var viewport_height = ProjectSettings.get_setting("display/window/size/viewport_height")
 #var viewport_width = ProjectSettings.get_setting("display/window/size/viewport_width")
@@ -29,17 +29,17 @@ var pckd_card = preload("res://Objects/Card.tscn")
 func _ready():
 	print_debug(margins.min_screen_width)
 	print_debug(margins.min_screen_length)
+	CM.moved_card_out_of_waste.connect(transfer)
 	
 	get_window().set_min_size(Vector2i(margins.min_screen_width, margins.min_screen_length))
 	#get_window().size_changed.connect(set_window_aspect_ratio)
 	
-	initialize_deck()
 	initialize_caches()
 	
-	print_debug(TM.tableau.cards)
-	TM.tableau.call("setup_table")
 	#Add Tableau Cards to Scene
-	#$TableauManager/TableauStacks.call("setup_table")
+	SM.tableau.call("setup_table")
+	SM.tableau.print_card_data()
+	
 
 
 #func set_window_aspect_ratio():
@@ -47,38 +47,48 @@ func _ready():
 #	get_window().size = Vector2i(get_window().size.x, get_window().size.x * project_aspect_ratio)
 
 func initialize_deck():
-	full_deck.clear()
+	var _full_deck: Array = []
 	randomize()
-	
+
 	#For each suit
 	for i in range(4):
 		#For each value in suit
 		for j in range(13):
 			var new_card = pckd_card.instantiate()
 			new_card.setup([suits[i],j,Card.FACEDOWN])
-			full_deck.append(new_card)
-	full_deck.shuffle()
+			_full_deck.append(new_card)
+	_full_deck.shuffle()
+	return _full_deck
 
 
 func initialize_caches():
-	initialize_collection(24, CM.stockpile)
-	initialize_collection(28, TM.tableau)
-	initialize_collection(0, SM.foundations)
-	initialize_collection(0, CM.wastepile)
-
-func initialize_collection(number: int, child: Node):
-	var _cards: Array[Card] = []
+	var shuffled_deck = initialize_deck()
+	var _caches = {
+		"stock": [],
+		"tableau": []
+	}
 	
-	for i in range(number):
-		_cards.append(full_deck.pop_back())
+	#Deal cards to each cache
+	for card in range(count.TABLEAU):
+		_caches.tableau.append(shuffled_deck.pop_back())
+	for card in range(count.STOCK):
+		_caches.stock.append(shuffled_deck.pop_back())
 	
-	child.cards.assign(_cards)
-	if child is TableauStacks:
-		child.arrange_tableau()
-	print_debug(child)
-	print_debug(child.cards)
-	initialized_collections.emit()
+	#Assign cards to the instanced nodes
+	for manager in self.get_children():
+		if manager.has_node("StockPileDeck"):
+			print_debug(str(manager) + " has stockpile")
+			manager.stockpile.cards.assign(_caches.stock)
+		if manager.has_node("TableauStacks"):
+			print_debug(str(manager) + " has tableau")
+			manager.tableau.cards.assign(_caches.tableau)
+			manager.tableau.arrange_tableau()
 
+
+func transfer():
+	#Receives inputs: Card, destination
+	pass
+	
 
 func save_game():
 	#ResourceSaver.save(coll, "res://Cache/%s.tres" % collection_type)

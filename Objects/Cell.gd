@@ -12,14 +12,14 @@ class FoundationCell:
 
 	func _ready():
 		message = "New FoundationCell"
-		print_debug(message)
+		#print_debug(message)
 
 class TableauCell:
 	extends Cell
 	
 	func _ready():
 		message = "New TableauCell"
-		print_debug(message)
+		#print_debug(message)
 	
 
 var value: int

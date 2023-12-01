@@ -1,6 +1,7 @@
 class_name CachesManager
 extends Node
 
+signal moved_card_out_of_waste(card)
 
 @export var stockpile: Node
 @export var wastepile: Node
@@ -9,6 +10,8 @@ extends Node
 func _ready():
 	stockpile.drew_card.connect(draw_from_stockpile)
 	stockpile.drew_last_card.connect(refresh_stockpile_from_waste)
+	#Card pick_up /drop signal should be connected
+
 
 
 func draw_from_stockpile(card):
@@ -27,13 +30,15 @@ func draw_from_stockpile(card):
 func refresh_stockpile_from_waste():
 	print_debug("Refresh Stock")
 	
+	#Push all remaining cards from wastepile to stockpile 
+	for i in wastepile.cards.size():
+		stockpile.cards.push_back(wastepile.cards.pop_back())
+	
 	#Remove all WastePileDeck children (Cards)
 	for card in wastepile.get_children():
 		wastepile.remove_child(card)
 	
-	#Push all remaining cards from wastepile data struct to stockpile data struct
-	for i in wastepile.cards.size():
-		stockpile.cards.push_back(wastepile.cards.pop_back())
+	stockpile.draw()
 
 
 
